@@ -27,10 +27,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // nullaway
-    compileOnly "com.google.code.findbugs:jsr305:3.0.2"
     annotationProcessor "com.uber.nullaway:nullaway:0.10.13"
     errorprone "com.google.errorprone:error_prone_core:2.18.0"
-    errorproneJavac "com.google.errorprone:javac:9+181-r4173-1"
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
@@ -48,11 +46,8 @@ tasks.withType(JavaCompile).configureEach {
     // remove the if condition if you want to run NullAway on test code
     if (!name.toLowerCase().contains("test")) {
         options.errorprone {
+            check("NullAway", CheckSeverity.ERROR)
             option("NullAway:AnnotatedPackages", "com.example.nullauthority")
         }
     }
-}
-
-tasks.compileJava {
-    options.errorprone.error("NullAway")
 }
