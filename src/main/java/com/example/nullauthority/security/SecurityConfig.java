@@ -2,9 +2,11 @@ package com.example.nullauthority.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,6 +48,7 @@ public class SecurityConfig {
         http
 
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.PATCH,"/json").permitAll()
                         .requestMatchers("/api/public/super")
                         .access(new WebExpressionAuthorizationManager("hasAuthority('read') && hasAuthority('write') && hasAuthority('update') && hasAuthority('delete')"))
                         .requestMatchers("/api/public/admin")
@@ -54,8 +57,10 @@ public class SecurityConfig {
                         .access(new WebExpressionAuthorizationManager("hasAuthority('read') && hasAuthority('write')"))
                         .requestMatchers("/api/public/test").access((authentication, object) -> authorizationDecision(authentication.get(), List.of("read")))
                         .requestMatchers("/api/public/test2").access((authentication, object) -> authorizationDecision(authentication.get(), List.of("read", "delete")))
+                        .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults())
+                .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }

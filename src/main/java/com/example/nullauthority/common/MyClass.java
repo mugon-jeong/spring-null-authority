@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 
 public class MyClass {
 
-    static void log(@Nullable Object x) {
+    static void log(Object x) {
         System.out.println(x.toString());
     }
 
@@ -16,9 +16,9 @@ public class MyClass {
         return 0;
     }
 
-    static void foo() {
-        log(null);
-    }
+//    static void foo() {
+//        log(null);
+//    }
 
     static void bar() {
         log("test");

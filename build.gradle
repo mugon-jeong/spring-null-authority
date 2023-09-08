@@ -26,6 +26,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // json patch
+    implementation 'com.flipkart.zjsonpatch:zjsonpatch:0.4.14'
+
     // nullaway
     annotationProcessor "com.uber.nullaway:nullaway:0.10.13"
     errorprone "com.google.errorprone:error_prone_core:2.18.0"
