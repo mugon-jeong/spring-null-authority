@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!--springboot 기본 로깅 설정 패턴 등 프로퍼티 정의-->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>${CONSOLE_LOG_THRESHOLD}</level>
+        </filter>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${CONSOLE_LOG_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- Bootstrap class file -->
+    <logger additivity="false" level="INFO" name="com.example.nullauthority.NullAuthorityApplication">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <!--spring profile에 따라 로그 설정-->
+    <include resource="logback-spring-${spring.profiles.active}.xml"/>
+</configuration>

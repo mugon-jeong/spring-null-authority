@@ -1,0 +1,56 @@
+<included>
+    <property resource="logback-variable.properties"/>
+    <!--파일 단위 로그 관리-->
+
+    <appender name="API_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--파일명-->
+        <file>${LOG_DIR}/api.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--내가 지정한 시간에 파일을 저장-->
+            <fileNamePattern>${LOG_DIR}/archive/api.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>1KB</maxFileSize>
+            <!--로그파일 최대 보관 주기(단위: 일)-->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                ${API_LOG_PATTERN}
+            </pattern>
+            <!--파일헤더에 어떤 형식으로 출력하는지 표시-->
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+        </encoder>
+    </appender>
+
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--파일명-->
+        <file>${LOG_DIR}/error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>error</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--내가 지정한 시간에 파일을 저장-->
+            <fileNamePattern>${LOG_DIR}/archive/error.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxFileSize>1KB</maxFileSize>
+            <!--로그파일 최대 보관 주기(단위: 일)-->
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                [ERROR] ${LOG_PATTERN}
+            </pattern>
+            <!--파일헤더에 어떤 형식으로 출력하는지 표시-->
+            <outputPatternAsHeader>true</outputPatternAsHeader>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="ERROR"/>
+    </root>
+
+    <logger additivity="false" lavel="INFO" name="com.example.nullauthority.log.filter.ReqResLoggingFilter">
+        <appender-ref ref="API_LOG"/>
+    </logger>
+
+</included>

@@ -1,0 +1,28 @@
+<included>
+    <!-- spring boot 기본 콘솔 로그 설정 -->
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <!-- Pattern -->
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5level) [%15.15t] [%X{request_id}] %clr(%-40.40logger{39}){cyan} : %m%n%wEx"/>
+
+    <appender name="THREAD_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!--해당 클래스를 기준으로 필터링-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- DEBUG < INFO < WARN < ERROR -->
+            <level>INFO</level>
+        </filter>
+        <layout>
+            <pattern>${LOG_PATTERN}</pattern>
+        </layout>
+    </appender>
+
+    <logger additivity="false" lavel="INFO" name="com.example.nullauthority">
+        <appender-ref ref="THREAD_CONSOLE"/>
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</included>
